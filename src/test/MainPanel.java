@@ -8,7 +8,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -18,7 +17,7 @@ public class MainPanel {
 	private static final String STOP = "Stop";
 	private static final String RESET = "Reset";
 	
-	private Logger logger;
+	public static Logger logger;
 	
 	private	JFrame jFrame;
 	private JPanel jPanelVertical;
@@ -27,21 +26,26 @@ public class MainPanel {
 	private	JButton stopJButton;
 	private	JButton resetJButton;
 	
-	private JTextField timeField;
+	private MyCanvas myCanvas;
 	private Runnable printTimeJob;
 	private Thread thread;
 	
 	private StopWatch stopWatch;
-	
+
+	/**
+	 * 화면을 갱신하는 클래스 
+	 * @author wangtai
+	 *
+	 */
 	public class PrintTime implements Runnable {
 
 		@Override
 		public void run() {
 			
 			try {
-				while( !Thread.currentThread().isInterrupted() ) {
+				while( true ) {
 					printTime();
-					Thread.sleep(10);
+					Thread.sleep(50);
 				}
 			} catch(InterruptedException e) {
 				logger.info("thread interrupted");
@@ -49,7 +53,8 @@ public class MainPanel {
 		}
 		
 		public void printTime() throws InterruptedException {
-			timeField.setText(stopWatch.toString());
+			myCanvas.setText(stopWatch.toString());
+			myCanvas.repaint();
 		}
 	}
 	
@@ -61,7 +66,7 @@ public class MainPanel {
 	}
 	
 	public void initLogger() {
-		logger = Logger.getLogger(MainPanel.class.getName());
+		logger = Logger.getLogger(MainPanel.class.getSimpleName());
 	}
 	
 	public void initStopWatch() {
@@ -95,8 +100,8 @@ public class MainPanel {
 		jPanelHorizontal.add(stopJButton);
 		jPanelHorizontal.add(resetJButton);
 
-		timeField = new JTextField();
-		jPanelVertical.add(timeField);
+		myCanvas = new MyCanvas();
+		jPanelVertical.add(myCanvas);
 		jPanelVertical.add(jPanelHorizontal);
 		
 		jFrame.getContentPane().add(jPanelVertical);
@@ -157,8 +162,6 @@ public class MainPanel {
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
-			
-			timeField.setText("");
 		}
 	}; 	// end resetAction
 	
