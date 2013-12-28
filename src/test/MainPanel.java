@@ -9,11 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang3.time.StopWatch;
+
 public class MainPanel {
 
 	private static final String START = "Start";
 	private static final String STOP = "Stop";
 	private static final String RESET = "Reset";
+	
+	private Logger logger;
 	
 	private	JFrame jFrame;
 	private JPanel jPanelVertical;
@@ -22,16 +26,24 @@ public class MainPanel {
 	private	JButton stopJButton;
 	private	JButton resetJButton;
 	
-	private Logger logger;
+	private StopWatch stopWatch;
 	
 	public static void main(String[] args) {
 		MainPanel mainPanel = new MainPanel();
 		mainPanel.initLogger();
+		mainPanel.initStopWatch();
 		mainPanel.go();
 	}
 	
 	public void initLogger() {
 		logger = Logger.getLogger(MainPanel.class.getName());
+	}
+	
+	public void initStopWatch() {
+		
+		if( stopWatch == null ) {
+			stopWatch = new StopWatch();
+		}
 	}
 	
 	public void go() {
@@ -47,6 +59,7 @@ public class MainPanel {
 		
 		startJButton = new JButton(START);
 		stopJButton = new JButton(STOP);
+		stopJButton.setEnabled(false);
 		resetJButton = new JButton(RESET);
 		
 		startJButton.addActionListener(startAction);
@@ -56,7 +69,7 @@ public class MainPanel {
 		jPanelHorizontal.add(startJButton);
 		jPanelHorizontal.add(stopJButton);
 		jPanelHorizontal.add(resetJButton);
-		
+
 		jPanelVertical.add(jPanelHorizontal);
 		
 		jFrame.getContentPane().add(jPanelVertical);
@@ -74,6 +87,12 @@ public class MainPanel {
 			stopJButton.setEnabled(true);
 			resetJButton.setEnabled(true);
 			
+			if(stopWatch.getTime() != 0) {
+				stopWatch.resume();
+			} else {
+				stopWatch.start();
+			}
+			
 		}
 	};	// end startAction 
 	
@@ -86,6 +105,8 @@ public class MainPanel {
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
 			
+			stopWatch.suspend();
+			logger.info("toString : " + stopWatch.toString());
 		}
 	};	// end stopAction 
 	
@@ -97,6 +118,8 @@ public class MainPanel {
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
+			
+			stopWatch.reset();
 		}
 	}; 	// end resetAction
 	
