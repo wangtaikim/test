@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -26,7 +27,31 @@ public class MainPanel {
 	private	JButton stopJButton;
 	private	JButton resetJButton;
 	
+	private JTextField timeField;
+	private Runnable printTimeJob;
+	private Thread thread;
+	
 	private StopWatch stopWatch;
+	
+	public class PrintTime implements Runnable {
+
+		@Override
+		public void run() {
+			
+			try {
+				while( !Thread.currentThread().isInterrupted() ) {
+					printTime();
+					Thread.sleep(10);
+				}
+			} catch(InterruptedException e) {
+				logger.info("thread interrupted");
+			}
+		}
+		
+		public void printTime() throws InterruptedException {
+			timeField.setText(stopWatch.toString());
+		}
+	}
 	
 	public static void main(String[] args) {
 		MainPanel mainPanel = new MainPanel();
@@ -70,6 +95,8 @@ public class MainPanel {
 		jPanelHorizontal.add(stopJButton);
 		jPanelHorizontal.add(resetJButton);
 
+		timeField = new JTextField();
+		jPanelVertical.add(timeField);
 		jPanelVertical.add(jPanelHorizontal);
 		
 		jFrame.getContentPane().add(jPanelVertical);
@@ -83,6 +110,7 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("startAction");
+			
 			startJButton.setEnabled(false);
 			stopJButton.setEnabled(true);
 			resetJButton.setEnabled(true);
@@ -93,6 +121,10 @@ public class MainPanel {
 				stopWatch.start();
 			}
 			
+			printTimeJob = new PrintTime();
+			thread = new Thread(printTimeJob);
+			thread.start();
+			
 		}
 	};	// end startAction 
 	
@@ -101,11 +133,13 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("stopAction");
+			stopWatch.suspend();
+			thread.interrupt();
+			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
 			
-			stopWatch.suspend();
 			logger.info("toString : " + stopWatch.toString());
 		}
 	};	// end stopAction 
@@ -115,11 +149,16 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("resetAction");
+			stopWatch.reset();
+			if( thread != null ) {
+				thread.interrupt();
+			}
+			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
 			
-			stopWatch.reset();
+			timeField.setText("");
 		}
 	}; 	// end resetAction
 	
