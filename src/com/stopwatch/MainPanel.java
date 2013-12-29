@@ -37,9 +37,7 @@ public class MainPanel {
 	private Runnable printTimeJob;
 	private Thread thread;
 	
-	private CurrentTime currentTime;
-	private long startTime = 0;
-	private long elapsedTime = 0;
+	private StopWatch stopWatch;
 
 	/**
 	 * 표시되는 시간값을 변경해주는 클래스
@@ -60,9 +58,7 @@ public class MainPanel {
 		}
 		
 		public void printTime() throws InterruptedException {
-			long time = System.currentTimeMillis() - startTime;
-			currentTime.setCurrentTime(time);
-			myCanvas.setText(currentTime.toString());
+			myCanvas.setText(stopWatch.toString());
 			myCanvas.repaint();
 		}
 		
@@ -71,7 +67,7 @@ public class MainPanel {
 	public static void main(String[] args) {
 		MainPanel mainPanel = new MainPanel();
 		mainPanel.initLogger();
-		mainPanel.initCurrentTime();
+		mainPanel.initStopWatch();
 		mainPanel.initUI();
 		
 	}
@@ -84,11 +80,11 @@ public class MainPanel {
 	}
 	
 	/**
-	 * CurrentTime 객체를 쵸기화 한다
+	 * StopWatch 객체를 쵸기화 한다
 	 */
-	public void initCurrentTime() {
+	public void initStopWatch() {
 		
-		currentTime = new CurrentTime();
+		stopWatch = new StopWatch();
 	}
 	
 	/**
@@ -137,10 +133,10 @@ public class MainPanel {
 			stopJButton.setEnabled(true);
 			resetJButton.setEnabled(true);
 			
-			if(startTime != 0) {
-				startTime = System.currentTimeMillis() - elapsedTime;
+			if(stopWatch.getTime() != 0) {
+				stopWatch.resume();
 			} else {
-				startTime = System.currentTimeMillis();
+				stopWatch.start();
 			}
 			
 			printTimeJob = new PrintTime();
@@ -160,7 +156,7 @@ public class MainPanel {
 			logger.info("stopAction");
 			
 			thread.interrupt();
-			elapsedTime = System.currentTimeMillis() - startTime;
+			stopWatch.suspend();
 			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
@@ -177,8 +173,7 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("resetAction");
-			startTime = 0;
-			elapsedTime = 0;
+			stopWatch.reset();
 			if( thread != null ) {
 				thread.interrupt();
 			}
