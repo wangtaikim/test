@@ -33,7 +33,7 @@ public class MainPanel {
 	private	JButton stopJButton;
 	private	JButton resetJButton;
 	
-	private MyCanvas myCanvas;
+	private TimeComponent timeComponent;
 	private Runnable printTimeJob;
 	private Thread thread;
 	
@@ -58,8 +58,8 @@ public class MainPanel {
 		}
 		
 		public void printTime() throws InterruptedException {
-			myCanvas.setText(stopWatch.toString());
-			myCanvas.repaint();
+			timeComponent.setText(stopWatch.toString());
+			timeComponent.repaint();
 		}
 		
 	}
@@ -110,8 +110,8 @@ public class MainPanel {
 		jPanelHorizontal.add(stopJButton);
 		jPanelHorizontal.add(resetJButton);
 
-		myCanvas = new MyCanvas();
-		jPanelVertical.add(myCanvas);
+		timeComponent = new TimeComponent();
+		jPanelVertical.add(timeComponent);
 		jPanelVertical.add(jPanelHorizontal);
 		
 		jFrame.getContentPane().add(jPanelVertical);
@@ -178,8 +178,8 @@ public class MainPanel {
 				thread.interrupt();
 			}
 			
-			myCanvas.setText("");
-			myCanvas.repaint();
+			timeComponent.setText("");
+			timeComponent.repaint();
 			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);

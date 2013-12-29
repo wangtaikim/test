@@ -12,7 +12,7 @@ import javax.swing.JComponent;
  *
  */
 
-public class MyCanvas extends JComponent {
+public class TimeComponent extends JComponent {
 
 	private String text = "";
 	

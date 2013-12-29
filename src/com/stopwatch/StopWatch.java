@@ -52,20 +52,19 @@ public class StopWatch {
 	}
 
 	public int getMillisecond() {
-		return (int) (currentMillisecond % 1000L);
+		return (int) (currentMillisecond % 1000L /10);
 	}
 
 	public String toString() {
 		currentMillisecond = System.currentTimeMillis() - startTime;
 		
 		StringBuffer sb = new StringBuffer();
-		DecimalFormat formatter2 = new DecimalFormat("00");
-		DecimalFormat formatter3 = new DecimalFormat("000");
+		DecimalFormat formatter = new DecimalFormat("00");
 
-		sb.append(formatter2.format(getHour())).append(":")
-				.append(formatter2.format(getMinute())).append(":")
-				.append(formatter2.format(getSecond())).append(".")
-				.append(formatter3.format(getMillisecond()));
+		sb.append(formatter.format(getHour())).append(":")
+				.append(formatter.format(getMinute())).append(":")
+				.append(formatter.format(getSecond())).append(".")
+				.append(formatter.format(getMillisecond()));
 
 		return sb.toString();
 	}
