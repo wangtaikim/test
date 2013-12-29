@@ -2,6 +2,8 @@ package com.stopwatch;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
@@ -116,6 +118,11 @@ public class MainPanel {
 		
 		jFrame.getContentPane().add(jPanelVertical);
 		jFrame.setSize(FRAME_X, FRAME_Y);
+		jFrame.addWindowListener(new WindowAdapter() {
+	    	public void windowClosing(WindowEvent e) { 
+                System.exit(0);
+	    	}
+		});
 		jFrame.setVisible(true);
 		
 	}	// end initUI
