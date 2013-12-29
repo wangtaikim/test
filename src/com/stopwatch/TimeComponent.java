@@ -7,7 +7,7 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 
 /**
- * 시간값을 화면에 그려주는 클래스 
+ * 시간값을 화면에 그려주는 Custom Component 
  * @author wangtai
  *
  */

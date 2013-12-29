@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
- * 
+ * main클래스. 스탑워치 GUI를 제공한다.
  * @author wangtai
  *
  */

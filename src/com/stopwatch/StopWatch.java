@@ -3,7 +3,9 @@ package com.stopwatch;
 import java.text.DecimalFormat;
 
 /**
- * StopWatch 클래스
+ * StopWatch 클래스. 
+ * StopWatch start, suspend, resume, reset기능을 제공한다.
+ * 측정 시간값을 시간:분:초.1/100초 포맷으로 제공한다.
  * @author wangtai
  *
  */
