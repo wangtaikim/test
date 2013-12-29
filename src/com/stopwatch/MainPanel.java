@@ -1,4 +1,4 @@
-package test;
+package com.stopwatch;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
