@@ -23,6 +23,8 @@ public class MainPanel {
 	private static final String START = "Start";
 	private static final String STOP = "Stop";
 	private static final String RESET = "Reset";
+	private static final int FRAME_X = 400;
+	private static final int FRAME_Y = 200;
 	
 	public static Logger logger;
 	
@@ -40,7 +42,7 @@ public class MainPanel {
 	private StopWatch stopWatch;
 
 	/**
-	 * 시간이 표시되는 화면을 갱신하는 클래스 
+	 * 표시되는 시간값을 변경해주는 클래스
 	 */
 	public class PrintTime implements Runnable {
 
@@ -117,7 +119,7 @@ public class MainPanel {
 		jPanelVertical.add(jPanelHorizontal);
 		
 		jFrame.getContentPane().add(jPanelVertical);
-		jFrame.setSize(500, 300);
+		jFrame.setSize(FRAME_X, FRAME_Y);
 		jFrame.setVisible(true);
 		
 	}	// end initUI
