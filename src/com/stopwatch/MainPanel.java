@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang3.time.StopWatch;
-
 /**
  * 
  * @author wangtai
@@ -39,7 +37,9 @@ public class MainPanel {
 	private Runnable printTimeJob;
 	private Thread thread;
 	
-	private StopWatch stopWatch;
+	private CurrentTime currentTime;
+	private long startTime = 0;
+	private long elapsedTime = 0;
 
 	/**
 	 * 표시되는 시간값을 변경해주는 클래스
@@ -60,8 +60,9 @@ public class MainPanel {
 		}
 		
 		public void printTime() throws InterruptedException {
-			String time = stopWatch.toString();
-			myCanvas.setText(time.substring(0, time.length()-1));
+			long time = System.currentTimeMillis() - startTime;
+			currentTime.setCurrentTime(time);
+			myCanvas.setText(currentTime.toString());
 			myCanvas.repaint();
 		}
 		
@@ -70,8 +71,9 @@ public class MainPanel {
 	public static void main(String[] args) {
 		MainPanel mainPanel = new MainPanel();
 		mainPanel.initLogger();
-		mainPanel.initStopWatch();
+		mainPanel.initCurrentTime();
 		mainPanel.initUI();
+		
 	}
 	
 	/**
@@ -82,13 +84,11 @@ public class MainPanel {
 	}
 	
 	/**
-	 * StopWatch 객체를 초기화 한다
+	 * CurrentTime 객체를 쵸기화 한다
 	 */
-	public void initStopWatch() {
+	public void initCurrentTime() {
 		
-		if( stopWatch == null ) {
-			stopWatch = new StopWatch();
-		}
+		currentTime = new CurrentTime();
 	}
 	
 	/**
@@ -137,10 +137,10 @@ public class MainPanel {
 			stopJButton.setEnabled(true);
 			resetJButton.setEnabled(true);
 			
-			if(stopWatch.getTime() != 0) {
-				stopWatch.resume();
+			if(startTime != 0) {
+				startTime = System.currentTimeMillis() - elapsedTime;
 			} else {
-				stopWatch.start();
+				startTime = System.currentTimeMillis();
 			}
 			
 			printTimeJob = new PrintTime();
@@ -158,14 +158,14 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("stopAction");
-			stopWatch.suspend();
+			
 			thread.interrupt();
+			elapsedTime = System.currentTimeMillis() - startTime;
 			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
 			
-			logger.info("toString : " + stopWatch.toString());
 		}
 	};	// end stopAction 
 	
@@ -177,7 +177,8 @@ public class MainPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			logger.info("resetAction");
-			stopWatch.reset();
+			startTime = 0;
+			elapsedTime = 0;
 			if( thread != null ) {
 				thread.interrupt();
 			}
