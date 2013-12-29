@@ -30,7 +30,7 @@ public class MyCanvas extends JComponent {
 	        					RenderingHints.VALUE_ANTIALIAS_ON);
 
 	        g2.setFont(new Font(Font.SERIF, Font.BOLD, 50));
-	        g2.drawString(text, 80,80);
+	        g2.drawString(text, 70,80);
 		}
 	}
 }
