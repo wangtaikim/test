@@ -11,6 +11,12 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang3.time.StopWatch;
 
+/**
+ * 
+ * @author wangtai
+ *
+ */
+
 public class MainPanel {
 
 	private static final String START = "Start";
@@ -33,9 +39,7 @@ public class MainPanel {
 	private StopWatch stopWatch;
 
 	/**
-	 * 화면을 갱신하는 클래스 
-	 * @author wangtai
-	 *
+	 * 시간이 표시되는 화면을 갱신하는 클래스 
 	 */
 	public class PrintTime implements Runnable {
 
@@ -56,19 +60,26 @@ public class MainPanel {
 			myCanvas.setText(stopWatch.toString());
 			myCanvas.repaint();
 		}
+		
 	}
 	
 	public static void main(String[] args) {
 		MainPanel mainPanel = new MainPanel();
 		mainPanel.initLogger();
 		mainPanel.initStopWatch();
-		mainPanel.go();
+		mainPanel.initUI();
 	}
 	
+	/**
+	 * 로거를 초기화 한다
+	 */
 	public void initLogger() {
 		logger = Logger.getLogger(MainPanel.class.getSimpleName());
 	}
 	
+	/**
+	 * StopWatch 객체를 초기화 한다
+	 */
 	public void initStopWatch() {
 		
 		if( stopWatch == null ) {
@@ -76,11 +87,10 @@ public class MainPanel {
 		}
 	}
 	
-	public void go() {
-		initPanel();
-	}
-	
-	public void initPanel() {
+	/**
+	 * UI를 초기화 한다
+	 */
+	public void initUI() {
 		jFrame = new JFrame();
 		jPanelVertical = new JPanel();
 		jPanelVertical.setLayout(new BoxLayout(jPanelVertical, BoxLayout.Y_AXIS));
@@ -108,8 +118,11 @@ public class MainPanel {
 		jFrame.setSize(500, 300);
 		jFrame.setVisible(true);
 		
-	}	// end initPanel
+	}	// end initUI
 	
+	/**
+	 * Start 버튼  리스너
+	 */
 	private ActionListener startAction = new ActionListener() {
 		
 		@Override
@@ -133,6 +146,9 @@ public class MainPanel {
 		}
 	};	// end startAction 
 	
+	/**
+	 * Stop 버튼 리스너
+	 */
 	private ActionListener stopAction = new ActionListener() {
 		
 		@Override
@@ -149,6 +165,9 @@ public class MainPanel {
 		}
 	};	// end stopAction 
 	
+	/**
+	 * Reset 버튼 리스너
+	 */
 	private ActionListener resetAction = new ActionListener() {
 		
 		@Override
@@ -159,12 +178,13 @@ public class MainPanel {
 				thread.interrupt();
 			}
 			
+			myCanvas.setText("");
+			myCanvas.repaint();
+			
 			startJButton.setEnabled(true);
 			stopJButton.setEnabled(false);
 			resetJButton.setEnabled(true);
 		}
 	}; 	// end resetAction
-	
-
 	
 }

@@ -5,6 +5,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
+/**
+ * 
+ * @author wangtai
+ *
+ */
+
 public class MyCanvas extends JComponent {
 
 	private String text = "";
