@@ -19,6 +19,7 @@ import org.apache.commons.lang3.time.StopWatch;
 
 public class MainPanel {
 
+	private static final String PROGRAM_NAME = "Stop Watch";
 	private static final String START = "Start";
 	private static final String STOP = "Stop";
 	private static final String RESET = "Reset";
@@ -49,7 +50,7 @@ public class MainPanel {
 			try {
 				while( true ) {
 					printTime();
-					Thread.sleep(50);
+					Thread.sleep(10);
 				}
 			} catch(InterruptedException e) {
 				logger.info("thread interrupted");
@@ -57,7 +58,8 @@ public class MainPanel {
 		}
 		
 		public void printTime() throws InterruptedException {
-			myCanvas.setText(stopWatch.toString());
+			String time = stopWatch.toString();
+			myCanvas.setText(time.substring(0, time.length()-1));
 			myCanvas.repaint();
 		}
 		
@@ -91,7 +93,7 @@ public class MainPanel {
 	 * UI를 초기화 한다
 	 */
 	public void initUI() {
-		jFrame = new JFrame();
+		jFrame = new JFrame(PROGRAM_NAME);
 		jPanelVertical = new JPanel();
 		jPanelVertical.setLayout(new BoxLayout(jPanelVertical, BoxLayout.Y_AXIS));
 		jPanelHorizontal = new JPanel();
